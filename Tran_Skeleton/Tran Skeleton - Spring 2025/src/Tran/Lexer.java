@@ -31,7 +31,7 @@ public class Lexer {
      * @return - A LinkedList of Tokens, formatted as described above
      * @throws Exception
      */
-    public List<Token> lex() throws Exception {
+    public List<Token> Lex() throws Exception {
 	    LinkedList<Token> tokenList = new LinkedList<Token>();
         currentLine = 0;
         currentCol = 0;
@@ -85,21 +85,29 @@ public class Lexer {
      */
     public Token readWord() {
         //initial check that the character indexed at position in txtManager is a letter char
-
+        if(!Character.isLetter(peekCharacter())){ throw new IllegalArgumentException();}
 
         //mini-fields
         int initialColIndex = currentCol;
         String parsed = "";
         char currentChar = peekCharacter();
 
+
         //parses word (includes letters and digits(after first char))
+        while(Character.isLetter(currentChar) || Character.isDigit(currentChar)) {
+            parsed = parsed.concat((""+txtManager.getCharacter()));
+
             //increases currentCol accordingly
+            //TODO currentCol++;
+            currentChar = peekCharacter();
+        }
 
         //checks if parsed is a keyword
-        //parsed is a keyword
-            //returns a token of a type indicated by parsed,
-        //parsed is not a keyword
-            //returns a token of type WORD with a value containing parsed
+        Token.TokenTypes type = typeFromLetters(parsed);
+        if((""+type).equals("WORD"))//parsed is not a keyword
+            return new Token(Token.TokenTypes.WORD, currentLine, currentCol, parsed);
+        else//parsed is a keyword
+            return new Token(type, currentLine, currentCol);
     }
 
     /**
@@ -114,18 +122,26 @@ public class Lexer {
      *          The value is equal to value, a parsed String from txtManager
      */
     /*public Token readNumber() {
-        //initial check that the character indexed at position in txtManager is a digit char or '.'
         //mini-fields
+        char currentChar = peekCharacter();
         int decimalCounter = 0;
         int initialColIndex = currentCol;
-        char currentChar = peekCharacter();
         String value = "";
+
+        //initial check that the character indexed at position in txtManager is a digit char or '.' followed by a digit
+        if(!(Character.isDigit(currentChar) || ('.' == currentChar && Character.isDigit(peekCharacter(1))))
+            throw new IllegalArgumentException;
 
         /*parses txtManager until position is not a digit or '.' OR position is a '.' and there is already
          a decimal (decimalCounter > 0). *
-        while(
-            //TODO adjust currentCol accordingly
-        //returns a Token of type NUMBER with a value equal to the parsed String value.
+        while(Character.isDigit(currentChar) || ('.' == currentChar && decimalCounter < 1)){
+            value = value.concat(("" + currentChar));
+            //TODO currentCol++;
+            if(currentChar == '.')
+                decimalCounter++;
+            currentChar = peekCharacter();
+        }
+        //return Token(Token.TokenTypes.NUMBER, currentLine, currentCol, value);
     }*/
 
     /**
@@ -193,10 +209,7 @@ public class Lexer {
         char character = peekCharacter();
         while(Character.isWhitespace(character) && (character != '\n')) {
             txtManager.getCharacter();
-            if(txtManager.isAtEnd())
-                character = '~';
-            else
-                character = peekCharacter();
+            character = peekCharacter();
             currentCol++;
         }
     }*/
@@ -227,8 +240,52 @@ public class Lexer {
     }
 
     /**
+     * finds the associated token type for the String parameter passed in. If it does not
+     * match any of the tokens exactly (case-insensitive), this program returns a type of WORD
+     * @param word - the String that is evaluated to determine which type is passed back
+     * @return the type associated with the String passed in
+     */
+    private Token.TokenTypes typeFromLetters(String word) {
+        switch (word) {
+            case "implements" -> {
+                return Token.TokenTypes.IMPLEMENTS;
+            }
+            case "class" -> {
+                return Token.TokenTypes.CLASS;
+            }
+            case "interface" -> {
+                return Token.TokenTypes.INTERFACE;
+            }
+            case "loop" -> {
+                return Token.TokenTypes.LOOP;
+            }
+            case "if" -> {
+                return Token.TokenTypes.IF;
+            }
+            case "else" -> {
+                return Token.TokenTypes.ELSE;
+            }
+            case "new" -> {
+                return Token.TokenTypes.NEW;
+            }
+            case "private" -> {
+                return Token.TokenTypes.PRIVATE;
+            }
+            case "shared" -> {
+                return Token.TokenTypes.SHARED;
+            }
+            case "construct" -> {
+                return Token.TokenTypes.CONSTRUCT;
+            }
+            default -> {
+                return Token.TokenTypes.WORD;
+            }
+        }
+    }
+
+    /**
      * @param char - the char to be evaluated
-     * @return - whether or not the given char is a punctuation mark according to the tran definition
+     * @return - whether the given char is a punctuation mark according to the tran definition
      */
     /*public boolean isPunctuation(char c) {
         for(char punctuator : punctuation){
