@@ -1,0 +1,414 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="ad06451f-30f9-46b4-b631-e00ea020fbd7" name="Changes" comment="Added &quot;toString()&quot;" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Interface" />
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
+}</component>
+  <component name="ProblemsViewState">
+    <option name="selectedTabId" value="CurrentFile" />
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 6
+}</component>
+  <component name="ProjectId" id="2jk0pyD0Ap37NP6EwYxAryeMhwE" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
+  <component name="ProjectViewState">
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Application.Main.executor&quot;: &quot;Run&quot;,
+    &quot;Downloaded.Files.Path.Enabled&quot;: &quot;false&quot;,
+    &quot;JUnit.CelsiusLexerTest.CelsiusLexerTestTest.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.CelsiusParserTest (1).executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.CelsiusParserTest.CelsiusParserTest.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.CelsiusParserTest.CelsiusParserTestTest.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.CelsiusParserTest.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.CelsiusTest.Celsius.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.Example1LexerTest.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.Example1ParserTest.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.Example2LexerTest.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.Example2ParserTest.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.Example3LexerTest.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.Example3ParserTest.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.Example4LexerTest.Example4LexerTestTest.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.Example4LexerTest.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.Example4ParserTest.Example4ParserTestTest.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.Example5LexerTest.Example5LexerTestTest.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.Example5ParserTest.Example5ParserTestTest.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.Example6LexerTest.Example6LexerTestTest.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.Example6ParserTest.Example6ParserTestTest.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.Example7LexerTest.Example7LexerTestTest.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.Example7ParserTest.Example7ParserTestTest.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.Example7ParserTest.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.FahrenheitLexerTest.FahrenheitLexerTestTest.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.FahrenheitParserTest.FahrenheitParserTestTest.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.FahrenheitParserTest.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.FahrenheitTest.Fahrenheit.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.InterfaceExampleLexerTest.InterfaceExampleLexerTestTest.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.InterfaceExampleParserTest.InterfaceExampleParserTestTest (1).executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.InterfaceExampleParserTest.InterfaceExampleParserTestTest.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.InterpreterTests.Loop1.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.InterpreterTests.SimpleAdd.executor&quot;: &quot;Debug&quot;,
+    &quot;JUnit.InterpreterTests.SimpleAddInstantiate.executor&quot;: &quot;Debug&quot;,
+    &quot;JUnit.InterpreterTests.SimpleAddInstantiateAndPrint.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.InterpreterTests.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.InterpreterTests.student.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.Lexer1KeywordTestLexerTest.Lexer1KeywordTestLexerTest.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.Lexer1MixedTestLexerTest.Lexer1MixedTestLexerTest.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.Lexer1MixedTestLexerTest.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.Lexer1WordTestLexerTest.Lexer1WordTestLexerTest.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.LexerTests.IndentTest.executor&quot;: &quot;Debug&quot;,
+    &quot;JUnit.LexerTests.KeyWordLexerTest.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.LexerTests.MixedTest.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.LexerTests.MultilineLexerTest.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.LexerTests.NotEqualsTest.executor&quot;: &quot;Debug&quot;,
+    &quot;JUnit.LexerTests.SimpleLexerTest.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.LexerTests.Test1.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.LexerTests.TwoCharacterTest.executor&quot;: &quot;Debug&quot;,
+    &quot;JUnit.LexerTests.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.LexerTests2.KeyWordLexerTest.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.LexerTests2.QuotedStringLexerTest.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.LexerTests2.TestIt.executor&quot;: &quot;Debug&quot;,
+    &quot;JUnit.LexerTests2.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.Parser1Tests.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.Parser2Tests.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.Parser2Tests.testLoop.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.Parser3Tests.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.ParserTests.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.ParserTests.testClass.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.ParserTests.testClassIf.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.ParserTests.testClassIfElse.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.ParserTests.testClassWithMethodsAndMembers.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.ParserTests.testClassWithMultipleMembers.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.ParserTests.testDeclarationAndInitialization.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.ParserTests.testInterface.executor&quot;: &quot;Debug&quot;,
+    &quot;JUnit.ParserTests.testLoopCondition.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.ParserTests.testLoopConditionWithVariable.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.ParserTests.testLoopVariable.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.ParserTests.testMethodCallWithMulitpleVariables.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.Tests in Tran.executor&quot;: &quot;Run&quot;,
+    &quot;Repository.Attach.Annotations&quot;: &quot;false&quot;,
+    &quot;Repository.Attach.JavaDocs&quot;: &quot;false&quot;,
+    &quot;Repository.Attach.Sources&quot;: &quot;false&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/Users/mphipps/Library/CloudStorage/OneDrive-UniversityatAlbany-SUNY/311/Assignments/Spring 2025/Tran Skeleton - Spring 2025&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;project.scopes&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  }
+}</component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/src/Tests" />
+      <recent name="$PROJECT_DIR$/src" />
+    </key>
+    <key name="MoveInnerDialog.RECENTS_KEY">
+      <recent name="AST" />
+    </key>
+    <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="" />
+    </key>
+  </component>
+  <component name="RunManager" selected="JUnit.InterfaceExampleParserTest.InterfaceExampleParserTestTest (1)">
+    <configuration name="InterfaceExampleParserTest.InterfaceExampleParserTestTest (1)" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="Tran" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="Tests.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="Tests" />
+      <option name="MAIN_CLASS_NAME" value="Tests.InterfaceExampleParserTest" />
+      <option name="METHOD_NAME" value="InterfaceExampleParserTestTest" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="InterfaceExampleParserTest.InterfaceExampleParserTestTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="Tran" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="tests.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="tests" />
+      <option name="MAIN_CLASS_NAME" value="tests.InterfaceExampleParserTest" />
+      <option name="METHOD_NAME" value="InterfaceExampleParserTestTest" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="Lexer1KeywordTestLexerTest.Lexer1KeywordTestLexerTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="Tran" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="Tests.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="Tests" />
+      <option name="MAIN_CLASS_NAME" value="Tests.Lexer1KeywordTestLexerTest" />
+      <option name="METHOD_NAME" value="Lexer1KeywordTestLexerTest" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="Lexer1MixedTestLexerTest.Lexer1MixedTestLexerTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="Tran" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="Tests.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="Tests" />
+      <option name="MAIN_CLASS_NAME" value="Tests.Lexer1MixedTestLexerTest" />
+      <option name="METHOD_NAME" value="Lexer1MixedTestLexerTest" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="Lexer1WordTestLexerTest.Lexer1WordTestLexerTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="Tran" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="Tests.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="Tests" />
+      <option name="MAIN_CLASS_NAME" value="Tests.Lexer1WordTestLexerTest" />
+      <option name="METHOD_NAME" value="Lexer1WordTestLexerTest" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <list>
+      <item itemvalue="JUnit.InterfaceExampleParserTest.InterfaceExampleParserTestTest" />
+      <item itemvalue="JUnit.InterfaceExampleParserTest.InterfaceExampleParserTestTest (1)" />
+      <item itemvalue="JUnit.Lexer1KeywordTestLexerTest.Lexer1KeywordTestLexerTest" />
+      <item itemvalue="JUnit.Lexer1MixedTestLexerTest.Lexer1MixedTestLexerTest" />
+      <item itemvalue="JUnit.Lexer1WordTestLexerTest.Lexer1WordTestLexerTest" />
+    </list>
+    <recent_temporary>
+      <list>
+        <item itemvalue="JUnit.InterfaceExampleParserTest.InterfaceExampleParserTestTest (1)" />
+        <item itemvalue="JUnit.InterfaceExampleParserTest.InterfaceExampleParserTestTest" />
+        <item itemvalue="JUnit.Lexer1KeywordTestLexerTest.Lexer1KeywordTestLexerTest" />
+        <item itemvalue="JUnit.Lexer1MixedTestLexerTest.Lexer1MixedTestLexerTest" />
+        <item itemvalue="JUnit.Lexer1WordTestLexerTest.Lexer1WordTestLexerTest" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-jdk-9823dce3aa75-fdfe4dae3a2d-intellij.indexing.shared.core-IU-243.22562.218" />
+        <option value="bundled-js-predefined-d6986cc7102b-deb605915726-JavaScript-IU-243.22562.218" />
+      </set>
+    </attachedChunks>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="ad06451f-30f9-46b4-b631-e00ea020fbd7" name="Changes" comment="" />
+      <created>1721915954628</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1721915954628</updated>
+      <workItem from="1721915955587" duration="21000" />
+      <workItem from="1721915980418" duration="22728000" />
+      <workItem from="1722013709872" duration="46123000" />
+      <workItem from="1722892047277" duration="8680000" />
+      <workItem from="1723048178588" duration="53673000" />
+      <workItem from="1723577176433" duration="52805000" />
+      <workItem from="1723839368370" duration="2625000" />
+      <workItem from="1724089622121" duration="10155000" />
+      <workItem from="1724270583973" duration="17556000" />
+      <workItem from="1725398208697" duration="14000" />
+      <workItem from="1725544018830" duration="280000" />
+      <workItem from="1730840073625" duration="5722000" />
+      <workItem from="1731510090834" duration="224000" />
+      <workItem from="1731685046882" duration="15764000" />
+      <workItem from="1732660809286" duration="32389000" />
+      <workItem from="1736448515369" duration="58379000" />
+      <workItem from="1737407038644" duration="321000" />
+      <workItem from="1737552676259" duration="100000" />
+      <workItem from="1737552782058" duration="122000" />
+    </task>
+    <task id="LOCAL-00001" summary="AST and parser complete-ish">
+      <option name="closed" value="true" />
+      <created>1723240082937</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1723240082937</updated>
+    </task>
+    <task id="LOCAL-00002" summary="Finished!">
+      <option name="closed" value="true" />
+      <created>1723839287782</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1723839287782</updated>
+    </task>
+    <task id="LOCAL-00003" summary="Fixed a few bugs. Added another test.">
+      <option name="closed" value="true" />
+      <created>1724092527309</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1724092527309</updated>
+    </task>
+    <task id="LOCAL-00004" summary="Fixed a few bugs. Added another test.">
+      <option name="closed" value="true" />
+      <created>1724093524786</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1724093524786</updated>
+    </task>
+    <task id="LOCAL-00005" summary="Added return values to the locals, so that we can return from a method. &#10;Made MethodCallExpressions have a return value so that they match the calling method.">
+      <option name="closed" value="true" />
+      <created>1724099386473</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1724099386473</updated>
+    </task>
+    <task id="LOCAL-00006" summary="Added &quot;toString()&quot;">
+      <option name="closed" value="true" />
+      <created>1724343184260</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1724343184260</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="AST and parser complete-ish" />
+    <MESSAGE value="Finished!" />
+    <MESSAGE value="Fixed a few bugs. Added another test." />
+    <MESSAGE value="Added return values to the locals, so that we can return from a method. &#10;Made MethodCallExpressions have a return value so that they match the calling method." />
+    <MESSAGE value="Added &quot;toString()&quot;" />
+    <option name="LAST_COMMIT_MESSAGE" value="Added &quot;toString()&quot;" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/Tests/LexerTests2.java</url>
+          <line>32</line>
+          <option name="timeStamp" value="3" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/Tests/LexerTests2.java</url>
+          <line>127</line>
+          <option name="timeStamp" value="4" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/Tests/LexerTests2.java</url>
+          <line>124</line>
+          <option name="timeStamp" value="5" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/Tests/ParserTests.java</url>
+          <option name="timeStamp" value="7" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/Tests/LexerTests.java</url>
+          <line>87</line>
+          <option name="timeStamp" value="31" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/Tests/LexerTests.java</url>
+          <line>67</line>
+          <option name="timeStamp" value="38" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/Interpreter/Interpreter.java</url>
+          <line>247</line>
+          <option name="timeStamp" value="43" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/Interpreter/Interpreter.java</url>
+          <line>556</line>
+          <option name="timeStamp" value="52" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/Tran/Parser.java</url>
+          <line>54</line>
+          <option name="timeStamp" value="55" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/Interpreter/Interpreter.java</url>
+          <line>525</line>
+          <option name="timeStamp" value="56" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/Tests/InterpreterTests.java</url>
+          <line>69</line>
+          <option name="timeStamp" value="57" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/Tests/CelsiusParserTest.java</url>
+          <line>202</line>
+          <option name="timeStamp" value="60" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/Tests/InterfaceExampleParserTest.java</url>
+          <line>107</line>
+          <option name="timeStamp" value="62" />
+        </line-breakpoint>
+        <breakpoint enabled="true" type="java-exception">
+          <properties class="java.lang.RuntimeException" package="java.lang" />
+          <option name="timeStamp" value="51" />
+        </breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
+    <watches-manager>
+      <configuration name="JUnit">
+        <watch expression="currentIndentation" />
+        <watch expression="lineNumber" />
+      </configuration>
+    </watches-manager>
+  </component>
+</project>
