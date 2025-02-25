@@ -1,5 +1,9 @@
 package Tests;
-
+/**************
+ * EDIT Correction - these tests (PrivateLexer2Test)
+ * aren't valid for this version of Tran.
+ * Please ignore them.
+ ********************/
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 

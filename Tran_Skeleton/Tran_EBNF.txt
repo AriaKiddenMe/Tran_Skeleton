@@ -1,0 +1,17 @@
+Tran = {Class | Interface}
+
+Interface = "interface" WORD NEWLINE
+    INDENT {methodHeader NEWLINE} DEDENT
+
+class = "class" WORD ["implements" WORD]
+    INDENT {member NEWLINE}
+    {constructor}
+    {method} NEWLINE DEDENT
+//TODO
+member =
+//TODO
+constructor =
+//TODO
+method = methodHeader
+//TODO
+methodHeader =
