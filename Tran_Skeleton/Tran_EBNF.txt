@@ -1,17 +1,47 @@
-Tran = {Class | Interface}
+Tran = ( Class | Interface )*
 
-Interface = "interface" WORD NEWLINE
-    INDENT {methodHeader NEWLINE} DEDENT
+Interface = "interface" IDENTIFIER NEWLINE INDENT MethodHeader* DEDENT
 
-class = "class" WORD ["implements" WORD]
-    INDENT {member NEWLINE}
-    {constructor}
-    {method} NEWLINE DEDENT
-//TODO
-member =
-//TODO
-constructor =
-//TODO
-method = methodHeader
-//TODO
-methodHeader =
+MethodHeader = IDENTIFIER "(" ParameterVariableDeclarations ")" (":" ParameterVariableDeclarations)? NEWLINE
+
+ParameterVariableDeclarations =  ParameterVariableDeclaration  ("," ParameterVariableDeclaration)*
+
+ParameterVariableDeclaration = IDENTIFIER IDENTIFIER
+
+Class =  "class" IDENTIFIER ( "implements" IDENTIFIER ( "," IDENTIFIER )* )? NEWLINE INDENT ( Constructor | MethodDeclaration | Member )* DEDENT
+
+Constructor = "construct" "(" ParameterVariableDeclarations ")" NEWLINE MethodBody
+
+Member = VariableDeclarations
+
+VariableDeclarations =  IDENTIFIER VariableNameValue ("," VariableNameValue)* NEWLINE
+
+VariableNameValue = IDENTIFIER ( "=" Expression)?
+
+MethodDeclaration = "private"? "shared"? MethodHeader NEWLINE MethodBody
+
+MethodBody = INDENT ( VariableDeclarations )*  Statement* DEDENT
+
+Statements = INDENT Statement*  DEDENT
+
+Statement = If | Loop | MethodCall | Assignment
+
+If = "if" BoolExpTerm NEWLINE Statements ("else" NEWLINE (Statement | Statements))?
+
+BoolExpTerm = MethodCallExpression | (Expression ( "==" | "!=" | "<=" | ">=" | ">" | "<" ) Expression) | VariableReference
+
+Loop = "loop" (VariableReference "=" )?  ( BoolExpTerm ) NEWLINE Statements
+
+Assignment = VariableReference "=" Expression NEWLINE
+
+MethodCall = (VariableReference ( "," VariableReference )* "=")? MethodCallExpression NEWLINE
+
+MethodCallExpression =  (IDENTIFIER ".")? IDENTIFIER "(" (Expression ("," Expression )* )? ")"
+
+Expression = Term ( ("+"|"-") Term )*
+
+Term = Factor ( ("*"|"/"|"%") Factor )*
+
+Factor = NUMBER | VariableReference |  STRINGLITERAL | CHARACTERLITERAL | MethodCallExpression | "(" Expression ")" | "new" IDENTIFIER "(" (Expression ("," Expression )*)? ")"
+
+VariableReference = IDENTIFIER

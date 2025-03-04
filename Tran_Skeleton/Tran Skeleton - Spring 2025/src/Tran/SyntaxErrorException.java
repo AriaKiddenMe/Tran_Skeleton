@@ -1,5 +1,11 @@
 package Tran;
-public class SyntaxErrorException extends Exception{
+
+import AST.NotOpNode;
+
+import java.util.function.Supplier;
+import java.util.Optional;
+
+public class SyntaxErrorException extends Exception {
     private final int lineNumber;
     private final int characterPosition;
 

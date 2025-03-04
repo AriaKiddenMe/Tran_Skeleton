@@ -9,6 +9,7 @@ public class InterfaceNode implements Node {
 
     @Override
     public String toString() {
+        methods.add(new MethodHeaderNode());
         return "interface " + name + "\n" + methods;
     }
 }
