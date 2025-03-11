@@ -141,6 +141,14 @@ public class TokenManager {
     }
 
     /**
+     * Useful when users want to know if the size of the tokenList has changed since their algorithm started
+     * @return
+     */
+    public int tokensLeft(){
+        return tokenList.size();
+    }
+
+    /**
      * Returns true when the next Token is of the type passed in. Null inclusive
      * @param type - the type being compared to the first Token's type
      * @return - True if their types allign

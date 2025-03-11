@@ -10,6 +10,8 @@ public class Parser {
 
     private TokenManager tokenManager;
     private final TranNode tranNode;
+    String errorMessageFollowingColon = "No variable declarations given despite following a " + Token.TokenTypes.COLON;
+
 
     public Parser(TranNode top, List<Token> tokens) {
         tokenManager = new TokenManager(tokens);
@@ -31,9 +33,9 @@ public class Parser {
         while(!tokenManager.done()) {
             deletePotNewLines();    //removes extra NEWLINE Tokens
             if (tokenManager.nextIsEither(Token.TokenTypes.CLASS, Token.TokenTypes.INTERFACE)) {    //CLASS or INTERFACE
-/*                if(tokenManager.matchAndRemove(Token.TokenTypes.CLASS).isPresent()){            //CLASS Token Found
+                if(tokenManager.nextIs(Token.TokenTypes.CLASS)){            //CLASS Token Found
                     tranNode.Classes.add(classNode());//TODO-UNDO THIS
-                } else*/ if(tokenManager.matchAndRemove(Token.TokenTypes.INTERFACE).isPresent()){ //INTERFACE Token Found
+                } else if(tokenManager.nextIs(Token.TokenTypes.INTERFACE)){ //INTERFACE Token Found
                     tranNode.Interfaces.add(interfaceNode());
                 }
             } else {            //NON-NEWLINE Token found outside of CLASS or INTERFACE blocks
@@ -52,6 +54,7 @@ public class Parser {
      * @throws SyntaxErrorException - when the Tokens passed in do not follow the format of the EBNF
      */
     private InterfaceNode interfaceNode() throws SyntaxErrorException {
+        requireToken(Token.TokenTypes.INTERFACE);
         InterfaceNode interfaceNode = new InterfaceNode();
         //for the Interface IDENTIFIER
         interfaceNode.name = requireAndReturnIDENTIFIER();
@@ -59,31 +62,33 @@ public class Parser {
         requireNewLine();
         //indent
         requireToken(Token.TokenTypes.INDENT);
+        deletePotNewLines();
         //methodHeaders
         Optional<MethodHeaderNode> methodHeaderNode = getMethodHeaderNode();
         while(methodHeaderNode.isPresent()) {
             interfaceNode.methods.add(methodHeaderNode.get());
+            deletePotNewLines();
             methodHeaderNode = getMethodHeaderNode();
         }
+        deletePotNewLines();
         //dedent
-        requireToken(Token.TokenTypes.DEDENT);      //TODO-UNDO This
+        requireToken(Token.TokenTypes.DEDENT);
         return interfaceNode;
     }
 
     //Class =  "class" IDENTIFIER ( "implements" IDENTIFIER ( "," IDENTIFIER )* )? NEWLINE INDENT ( Constructor | MethodDeclaration | Member )* DEDENT
     private ClassNode classNode() throws SyntaxErrorException {
-        //TODO-UNDO this
+        requireToken(Token.TokenTypes.CLASS);
         ClassNode classNode = new ClassNode();
-        /*
         //name
-        classNode.name = requireIDENTIFIER();
+        classNode.name = requireAndReturnIDENTIFIER();
         //interfaces
         if(tokenManager.nextTwoTokensMatch(Token.TokenTypes.IMPLEMENTS, Token.TokenTypes.WORD)) {
             //first interface
             tokenManager.matchAndRemove(Token.TokenTypes.IMPLEMENTS);
             classNode.interfaces.add(tokenManager.matchAndRemove(Token.TokenTypes.WORD).get().getValue());
             //any other interfaces
-            while(tokenManager.nextTwoTokensMatch(Token.TokenTypes.WORD, Token.TokenTypes.COMMA)) {
+            while(tokenManager.nextTwoTokensMatch(Token.TokenTypes.COMMA, Token.TokenTypes.WORD)) {
                 tokenManager.matchAndRemove(Token.TokenTypes.COMMA);
                 classNode.interfaces.add(tokenManager.matchAndRemove(Token.TokenTypes.WORD).get().getValue());
             }
@@ -99,21 +104,30 @@ public class Parser {
             deletePotNewLines();
             //in case tokens run out without exiting the class
             requireNotDone();
-            if(tokenManager.matchAndRemove(Token.TokenTypes.CONSTRUCT).isPresent()) {          //Constructor
-                classNode.constructors.add(getConstructorNode());
+            if(tokenManager.nextIs(Token.TokenTypes.CONSTRUCT)) {          //Constructor
+                classNode.constructors.add(getConstructorNode().get());
                 moreConstsMethodsMembers = true;
-            } else if(tokenManager.nextIsEither(Token.TokenTypes.PRIVATE, Token.TokenTypes.SHARED)) {   //MethodDeclaration
-                //TODO: Hold up, can't fields have privacy modifiers too?
-                classNode.methods.add(getMethodDeclarationNode());
-                moreConstsMethodsMembers = true;
-            } else if() {        //Member
-                classNode.members.add(getMemeberNode());
-                moreConstsMethodsMembers = true;
+            } else if(tokenManager.nextIsEither(Token.TokenTypes.PRIVATE, Token.TokenTypes.SHARED) ||
+                    tokenManager.nextTwoTokensMatch(Token.TokenTypes.WORD, Token.TokenTypes.LPAREN)) {   //MethodDeclaration
+                Optional<MethodDeclarationNode> methodDelclarationOpt = getMethodDeclarationNode();
+                if(methodDelclarationOpt.isPresent()) {
+                    classNode.methods.add(methodDelclarationOpt.get());
+                    moreConstsMethodsMembers = true;
+                } else
+                    throw new SyntaxErrorException("expected a method.", tokenManager.getCurrentLine(), tokenManager.getCurrentColumnNumber());
+            } else if(tokenManager.nextTwoTokensMatch(Token.TokenTypes.WORD, Token.TokenTypes.WORD)) {        //Member
+                Optional<MemberNode> memberNodeOpt = getMemberNode();
+                if(memberNodeOpt.isPresent()) {
+                    classNode.members.add(memberNodeOpt.get());
+                    moreConstsMethodsMembers = true;
+                } else throw new SyntaxErrorException("expected a member.", tokenManager.getCurrentLine(), tokenManager.getCurrentColumnNumber());
             } else{
-                //TODO Throw Exception
+                if(!tokenManager.nextIs(Token.TokenTypes.DEDENT))
+                    throw new SyntaxErrorException("expected a constructor, method, or member.",
+                            tokenManager.getCurrentLine(), tokenManager.getCurrentColumnNumber());
             }
         }
-        requireToken(Token.TokenTypes.DEDENT);*/
+        requireToken(Token.TokenTypes.DEDENT);
         return classNode;
     }
 
@@ -138,33 +152,63 @@ public class Parser {
         MethodHeaderNode methodHeaderNode = new MethodHeaderNode();
 
         methodHeaderNode.name = requireAndReturnIDENTIFIER();
-
         requireToken(Token.TokenTypes.LPAREN);
         //0 or greater parameters
-        methodHeaderNode.parameters = getParameterVariableDeclarations();
+        methodHeaderNode.parameters = getVariableDeclarations();
         requireToken(Token.TokenTypes.RPAREN);
 
         if(tokenManager.matchAndRemove(Token.TokenTypes.COLON).isPresent()) {
             //first return value (required when COLON Token found)
-            String errorMessageFollowingType = "No variable declarations given despite following a " + Token.TokenTypes.COLON;
-            methodHeaderNode.returns = getParameterVariableDeclarationsRequireFirst(errorMessageFollowingType);
+            methodHeaderNode.returns = getVariableDeclarationsRequireFirst(errorMessageFollowingColon);
         }
         requireNewLineOrPeekDedent();
         return Optional.of(methodHeaderNode);
     }
 
     //MethodDeclaration = "private"? "shared"? MethodHeader NEWLINE MethodBody
+    private Optional<MethodDeclarationNode> getMethodDeclarationNode() throws SyntaxErrorException {
+        MethodDeclarationNode methodDeclaration = new MethodDeclarationNode();
+        if(tokenManager.nextIsEither(Token.TokenTypes.PRIVATE, Token.TokenTypes.SHARED)){
+            if(tokenManager.matchAndRemove(Token.TokenTypes.SHARED).isPresent()){
+                methodDeclaration.isShared = true;
+                methodDeclaration.isPrivate = false;
+            } else if (tokenManager.matchAndRemove(Token.TokenTypes.PRIVATE).isPresent()){    //assumes we don't get false positives from TokenManager's nextIsEither method
+                methodDeclaration.isShared = false;
+                methodDeclaration.isPrivate = true;
+            } else {
+                throw new SyntaxErrorException("False positive from nextIsEither method in TokenManager Class",
+                        tokenManager.getCurrentLine(), tokenManager.getCurrentColumnNumber());
+            }
+        } else if(!tokenManager.nextTwoTokensMatch(Token.TokenTypes.WORD, Token.TokenTypes.LPAREN)){
+            /*the first two tokens are not a privacy modifier nor a word followed by a left parenthesis. There must not be
+            a method here*/
+            return Optional.empty();
+        }
 
+        /*assuming there is a method from this point forward, though a method call could theoretically fit into this syntax,
+        this method should never be called within another method. Also assuming this method is not accidentally called when
+        processing an interface*/
+        Optional<MethodHeaderNode> optionalMethodHeaderNode = getMethodHeaderNode();
+        if(optionalMethodHeaderNode.isEmpty()) {
+            throw new SyntaxErrorException("Expected a Method Header", tokenManager.getCurrentLine(), tokenManager.getCurrentColumnNumber());
+        }
+        MethodHeaderNode methodHeader = optionalMethodHeaderNode.get();
+        methodDeclaration.name = methodHeader.name;
+        methodDeclaration.parameters = methodHeader.parameters;
+        methodDeclaration.returns = methodHeader.returns;
+        //TODO: TEST local variables set inside getStatements... theoretically
+        methodDeclaration.statements = getStatements(methodDeclaration);
+        return Optional.of(methodDeclaration);
+    }
 
     //ParameterVariableDeclaration = IDENTIFIER IDENTIFIER
-    private VariableDeclarationNode getVariableDeclarationNode() throws SyntaxErrorException {
+    private Optional<VariableDeclarationNode> getVariableDeclarationNode() throws SyntaxErrorException {
         VariableDeclarationNode variableDeclarationNode = new VariableDeclarationNode();
         if(tokenManager.nextTwoTokensMatch(Token.TokenTypes.WORD, Token.TokenTypes.WORD)) {
             variableDeclarationNode.type = tokenManager.matchAndRemove(Token.TokenTypes.WORD).get().getValue();
             variableDeclarationNode.name = tokenManager.matchAndRemove(Token.TokenTypes.WORD).get().getValue();
-        } else throw new SyntaxErrorException("Expected the next two tokens to be of type WORD",
-                tokenManager.getCurrentLine(), tokenManager.getCurrentColumnNumber());
-        return variableDeclarationNode;
+            return Optional.of(variableDeclarationNode);
+        } else return Optional.empty();
     }
 
     //ParameterVariableDeclarations =  ParameterVariableDeclaration  ("," ParameterVariableDeclaration)*
@@ -181,47 +225,173 @@ public class Parser {
 
         requireToken(Token.TokenTypes.LPAREN);
 
-        constructorNode.parameters = getParameterVariableDeclarations();
+        constructorNode.parameters = getVariableDeclarations();
 
         requireToken(Token.TokenTypes.RPAREN);
 
         requireNewLine();
 
         //TODO check works
-        constructorNode.statements = getMethodBody();
-
+        constructorNode.statements = getStatements(constructorNode);
         return Optional.of(constructorNode);
     }
 
     //MethodBody = INDENT ( VariableDeclarations )*  Statement* DEDENT
-    private LinkedList<StatementNode> getMethodBody() throws SyntaxErrorException {
-        //TODO
-        return new LinkedList<StatementNode>();
+    private LinkedList<StatementNode> getStatements(Node blockNode) throws SyntaxErrorException {
+        LinkedList<StatementNode> statements = new LinkedList<StatementNode>();
+        LinkedList<VariableDeclarationNode> variables = new LinkedList<VariableDeclarationNode>();
+        deletePotNewLines();
+        requireToken(Token.TokenTypes.INDENT);
+        deletePotNewLines();
+        //getStatementNode() returns either a statementNode (if present) or null
+        StatementNode nextStatement = getStatementNode();
+        Optional<VariableDeclarationNode> nextVariableDeclaration = getVariableDeclarationNode();
+        do {
+            if(nextStatement != null) statements.add(nextStatement);
+            if(nextVariableDeclaration.isPresent()) variables.add(nextVariableDeclaration.get());
+            requireNewLineOrPeekDedent();
+            nextStatement = getStatementNode();
+            nextVariableDeclaration = getVariableDeclarationNode();
+        } while (!tokenManager.nextIs(Token.TokenTypes.DEDENT));
+        requireToken(Token.TokenTypes.DEDENT);
+
+        //ensures variables are not declared outside methods and constructors
+        if(!variables.isEmpty()){
+            //I'd use Interfaces and Generics, but there is not a way for me to do that safety whilst only turning in 4 of the projects files
+            if(blockNode instanceof MethodDeclarationNode) {
+                MethodDeclarationNode methodDeclarationNode = (MethodDeclarationNode) blockNode;
+                methodDeclarationNode.locals = variables;
+            }
+            else if(blockNode instanceof ConstructorNode){
+                ConstructorNode constructorNode = (ConstructorNode) blockNode;
+                constructorNode.parameters = variables;
+            } else {
+                throw new SyntaxErrorException("Local variables found outside of method or constructor block",
+                        tokenManager.getCurrentLine(), tokenManager.getCurrentColumnNumber());
+            }
+        }
+
+        return statements;
     }
 
     //Member = VariableDeclarations
+    private Optional<MemberNode> getMemberNode() throws SyntaxErrorException {
+        Optional<VariableDeclarationNode> variableDeclaration = getVariableDeclarationNode();
+        if(variableDeclaration.isPresent()) {
+            MemberNode memberNode = new MemberNode();
+            memberNode.declaration = variableDeclaration.get();
+            return Optional.of(memberNode);
+        } else return Optional.empty();
+    }
 
     //VariableDeclarations =  IDENTIFIER VariableNameValue ("," VariableNameValue)* NEWLINE
 
-    //Statement = If | Loop | MethodCall | Assignment
+    /**
+     * EBNF: Statement = If | Loop | MethodCall | Assignment
+     * Due to the return type being an interface, Generics gets in the way of using the Optional Class. Therefore, this
+     * method will implement the functionality of the Optional class whilst loosing the Optional wrapping signature to
+     * the class
+     * @return either an object of type Statement
+     *          OR null in the instance where no statement is found
+     * @throws SyntaxErrorException - in the event that a statement pattern is recognized and started but does not hold to
+     * the syntax of tran.
+     */
+    private StatementNode getStatementNode() throws SyntaxErrorException {
+        //AssignmentNode
+        Optional<AssignmentNode> assignmentNodeOptional = getAssignmentNode();
+        if(assignmentNodeOptional.isPresent())  return assignmentNodeOptional.get();
+
+        //IfNode
+        Optional<IfNode> ifNodeOptional = getIfNode();
+        if(ifNodeOptional.isPresent())  return ifNodeOptional.get();
+
+        //LoopNode
+        Optional<LoopNode> loopNodeOptional = getLoopNode();
+        if(loopNodeOptional.isPresent())  return loopNodeOptional.get();
+
+        //MethodCallStatementNode
+        Optional<MethodCallStatementNode> optionalMethodCallStatementNode = getMethodCallStatementNode();
+        if(optionalMethodCallStatementNode.isPresent())  return optionalMethodCallStatementNode.get();
+
+        return null;    //no statement found
+    }
 
     //VariableNameValue = IDENTIFIER ( "=" Expression)?
 
     //If = "if" BoolExpTerm NEWLINE Statements ("else" NEWLINE (Statement | Statements))?
+    private Optional<IfNode> getIfNode() throws SyntaxErrorException {
+        if(tokenManager.matchAndRemove(Token.TokenTypes.IF).isEmpty())  return Optional.empty();
+        IfNode ifNode = new IfNode();
+        ifNode.condition = getBoolExpressionNode();
+        requireNewLine();
+        ifNode.statements = getStatements(ifNode);
+        ifNode.elseStatement = getElseNode();
+        return Optional.of(ifNode);
+    }
 
     //Loop = "loop" (VariableReference "=" )?  ( BoolExpTerm ) NEWLINE Statements
+    private Optional<LoopNode> getLoopNode() throws SyntaxErrorException {
+        if(tokenManager.matchAndRemove(Token.TokenTypes.LOOP).isEmpty())  return Optional.empty();
+        LoopNode loopNode = new LoopNode();
+        if(tokenManager.nextTwoTokensMatch(Token.TokenTypes.WORD, Token.TokenTypes.ASSIGN)) {
+            loopNode.assignment = getVariableReferenceNode();
+            requireToken(Token.TokenTypes.ASSIGN);
+        } //optional so don't need to throw an error
+        loopNode.expression = getBoolExpressionNode();
+        requireNewLine();
+        loopNode.statements = getStatements(loopNode);
+        return Optional.of(loopNode);
+    }
 
     //MethodCall = (VariableReference ( "," VariableReference )* "=")? MethodCallExpression NEWLINE
+    private Optional<MethodCallStatementNode> getMethodCallStatementNode() throws SyntaxErrorException {
+        //TODO - a temporary stub out, so it will compile and execute
+        return Optional.empty();
+    }
 
     //Assignment = VariableReference "=" Expression NEWLINE
+    private Optional<AssignmentNode> getAssignmentNode() throws SyntaxErrorException {
+        //TODO - a temporary stub out, so it will compile and execute
+        return Optional.empty();
+    }
 
     //Expression = Term ( ("+"|"-") Term )*
+    private ExpressionNode getExpressionNode() throws SyntaxErrorException {
+        ExpressionNode expressionNode;
+        //BooleanLiteralNode
+        //BooleanOpNode
+        //CharLiteralNode
+        //CompareNode
+        //MathOpNode
+        //MethodCallExpressionNode
+        //NewNode
+        //NotOpNode
+        //NumbericalLiteralNode
+        //StringLiteralNode
+        //VariableReferenceNode
+        //TODO - a temporary stub out, so it will compile and execute
+        return new VariableReferenceNode();
+    }
 
     //BoolExpTerm = MethodCallExpression | (Expression ( "==" | "!=" | "<=" | ">=" | ">" | "<" ) Expression) | VariableReference
+    private BooleanOpNode getBoolExpressionNode() throws SyntaxErrorException {
+        //TODO - a temporary stub out, so it will compile and execute
+        BooleanOpNode boolOpNode = new BooleanOpNode();
+        return boolOpNode;
+    }
 
     //Statements = INDENT Statement*  DEDENT
 
     //VariableReference = IDENTIFIER
+    private Optional<VariableReferenceNode> getVariableReferenceNode() throws SyntaxErrorException {
+        VariableReferenceNode variableReferenceNode = new VariableReferenceNode();
+        Optional<Token> nextToken = tokenManager.matchAndRemove(Token.TokenTypes.WORD);
+        if(nextToken.isPresent()){
+            variableReferenceNode.name = nextToken.get().getValue();
+            return Optional.of(variableReferenceNode);
+        }
+        else                        return Optional.empty();
+    }
 
     //MethodCallExpression =  (IDENTIFIER ".")? IDENTIFIER "(" (Expression ("," Expression )* )? ")"
 
@@ -229,30 +399,65 @@ public class Parser {
 
     //Factor = NUMBER | VariableReference |  STRINGLITERAL | CHARACTERLITERAL | MethodCallExpression | "(" Expression ")" | "new" IDENTIFIER "(" (Expression ("," Expression )*)? ")"
 
+    /**
+     * EBNF: ("else" NEWLINE (Statement | Statements))?
+     * Determines if there is an else block and if there is, it returns an optional of the else statements in the
+     * ElseNode Object.
+     * @return  either  an empty Optional<ElseNode
+     *          or      an Optional<ElseNode> holding an ElseNode containing a list of statements
+     * @throws SyntaxErrorException - in the event that one of the Statements meant to be returned is in an incorrect Syntax
+     */
+    private Optional<ElseNode> getElseNode() throws SyntaxErrorException {
+        if(tokenManager.matchAndRemove(Token.TokenTypes.ELSE).isEmpty())  return Optional.empty();
+        requireNewLine();
+        ElseNode elseNode = new ElseNode();
+        elseNode.statements = getStatements(new IfNode());
+        return Optional.of(elseNode);
+    }
+
+    //Helper Methods
     private void deletePotNewLines(){
         while(tokenManager.matchAndRemove(Token.TokenTypes.NEWLINE).isPresent());//removes all the sequential newlines
     }
 
-    private LinkedList<VariableDeclarationNode> getParameterVariableDeclarations() throws SyntaxErrorException {
+    /**
+     * Finds the next few variables listed in parameter format and returns them in a list of Variable Declaration Nodes
+     * @return - a list of Variable Declaration Nodes of the (potential) parameter variables in tokenManager. Can be empty
+     * @throws SyntaxErrorException - in the event that an extra comma is used or a keyword is used
+     */
+    private LinkedList<VariableDeclarationNode> getVariableDeclarations() throws SyntaxErrorException {
         LinkedList<VariableDeclarationNode> paramVarDeclNodes = new LinkedList<VariableDeclarationNode>();
-        while(tokenManager.nextTwoTokensMatch(Token.TokenTypes.WORD, Token.TokenTypes.WORD)) {
-            paramVarDeclNodes.add(getVariableDeclarationNode());
+        Optional<VariableDeclarationNode> nextVariableDeclaration = getVariableDeclarationNode();
+        int initTokensLeft = tokenManager.tokensLeft();
+        while(nextVariableDeclaration.isPresent()) {
+            paramVarDeclNodes.add(nextVariableDeclaration.get());
             if(tokenManager.matchAndRemove(Token.TokenTypes.COMMA).isEmpty()) return paramVarDeclNodes;
+            nextVariableDeclaration = getVariableDeclarationNode();
         }
-        return paramVarDeclNodes;
+        if(initTokensLeft != tokenManager.tokensLeft()) { //list of parameters ended with an extra comma
+            throw errorNotExpectedTypes(new Token.TokenTypes[]{Token.TokenTypes.WORD, Token.TokenTypes.COMMA}, tokenManager.peek());
+        } else return paramVarDeclNodes;
     }
 
-    private LinkedList<VariableDeclarationNode> getParameterVariableDeclarationsRequireFirst(String typeFollowsErrorMessage)
+    /**
+     * Finds the next few variables listed in parameter format and returns them in a list of Variable Declaration Nodes
+     * @return - a list of Variable Declaration Nodes of at least 1 parameter variable in tokenManager. Cannot be empty
+     * @throws SyntaxErrorException - in the event that an extra comma is used or there is not at least 1 variable declared
+     */
+    private LinkedList<VariableDeclarationNode> getVariableDeclarationsRequireFirst(String typeFollowsErrorMessage)
             throws SyntaxErrorException {
         LinkedList<VariableDeclarationNode> paramVarDeclNodes = new LinkedList<VariableDeclarationNode>();
-        if(!tokenManager.nextTwoTokensMatch(Token.TokenTypes.WORD, Token.TokenTypes.WORD)) {
+        Optional<VariableDeclarationNode> nextVariableDeclaration = getVariableDeclarationNode();
+        if(nextVariableDeclaration.isEmpty()) {
             throw new SyntaxErrorException(typeFollowsErrorMessage, tokenManager.getCurrentLine(), tokenManager.getCurrentColumnNumber());
         }
-        paramVarDeclNodes.add(getVariableDeclarationNode());
-        if(tokenManager.matchAndRemove(Token.TokenTypes.COMMA).isPresent()) {
-            paramVarDeclNodes.addAll(getParameterVariableDeclarations());
-        }
-        return paramVarDeclNodes;
+        do{
+            paramVarDeclNodes.add(nextVariableDeclaration.get());
+            if(tokenManager.matchAndRemove(Token.TokenTypes.COMMA).isEmpty()) return paramVarDeclNodes;
+            nextVariableDeclaration = getVariableDeclarationNode();
+        } while (nextVariableDeclaration.isPresent());
+        //there was a comma and it was not followed by a variable declaration
+        throw errorNotExpectedType(Token.TokenTypes.WORD, tokenManager.peek());
     }
 
     private void requireNotDone() throws SyntaxErrorException {
